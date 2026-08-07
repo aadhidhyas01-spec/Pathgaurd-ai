@@ -184,7 +184,7 @@
                                 <div class="speakers-row">
                                     {% for spk in talk.speakers %}
                                         <div class="speaker-pill">
-                                            <div class="speaker-avatar" style="background: {{ spk.avatar_bg }};">
+                                            <div class="speaker-avatar spk-{{ spk.id }}" data-avatar-bg="{{ spk.avatar_bg }}">
                                                 {{ spk.first_name[0] }}{{ spk.last_name[0] }}
                                             </div>
                                             <div class="speaker-details">

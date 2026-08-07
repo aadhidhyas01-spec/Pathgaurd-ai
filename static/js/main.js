@@ -18,6 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSearch = '';
     let currentSpeaker = '';
 
+    // Apply dynamic avatar backgrounds if specified in dataset
+    document.querySelectorAll('.speaker-avatar[data-avatar-bg]').forEach(el => {
+        if (el.dataset.avatarBg) {
+            el.style.background = el.dataset.avatarBg;
+        }
+    });
+
     // Initialize listeners
     if (searchInput) {
         searchInput.addEventListener('input', (e) => {
