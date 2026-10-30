@@ -1,149 +1,60 @@
-<<<<<<< HEAD
-# Google Cloud Tech Summit 2026 - 1-Day Technical Conference Web Application
+# Google Cloud Tech Summit 2026 — Conference Website
 
-A modern, high-performance 1-day technical conference website for **Google Cloud Tech Summit 2026**. Built with **Python and Flask** on the server side, with a responsive front-end featuring Glassmorphism UI, real-time multi-criteria search, category tab filtering, 1-day timetable schedule view, speaker directory, modal session previews, and a 60-minute lunch break.
+A Flask-based conference website prototype for a one-day technical summit. It presents a schedule, speaker directory and session information, with search and filtering for attendees.
 
----
+> The repository retains an older name, `Pathgaurd-ai`; the implementation in this repository is a conference website, not a security product.
 
-## Features Summary
+## Features
 
-1. **Home Page**: Displays event date, location (Moscone Center West & Virtual), schedule, and live timetable.
-2. **8 Technical Talks**: 8 curated sessions covering Vertex AI, Cloud Run v2, BigQuery, Mandiant Zero-Trust Security, Cloud TPUs, Cloud Spanner & GKE, Terraform, and Vector Search.
-3. **1 or 2 Max Speakers per Talk**: Every talk has 1 or 2 featured speakers with avatar cards.
-4. **Complete Talk Data Schema**:
-   - `ID` (e.g. Session #01 - #08)
-   - `Title`
-   - `Speakers` (List of speaker objects)
-   - `Category` (1: *AI & Machine Learning*, 2: *Cloud Infrastructure & Security*)
-   - `Description`
-   - `Time Slot` (e.g., 09:00 AM - 09:45 AM)
-5. **Detailed Speaker Schema**:
-   - `First Name`
-   - `Last Name`
-   - `LinkedIn URL` (direct link badge)
-   - Role / Title & Company bio
-6. **Search & Filter Capabilities**:
-   - Instant live search bar by Title, Speaker Name, Description, or Topic.
-   - Category filter tabs (*All*, *AI & Machine Learning*, *Cloud Infrastructure & Security*).
-   - Speaker filter dropdown list.
-7. **60-Minute Lunch Break**: Dedicated networking & catering lunch break scheduled from 12:15 PM to 01:15 PM.
-8. **View Toggles**: Switch between **Timeline Timetable View** and **Grid Cards View**.
-9. **Interactive Modal Dialogs**: Click any session card to reveal deep-dive abstracts and full speaker bios with direct LinkedIn links.
+- Conference landing page and day schedule.
+- Eight demo technical sessions covering AI/ML, cloud infrastructure and security topics.
+- Speaker cards with roles, company details and profile links.
+- Search by session title, speaker or topic.
+- Filter by session category and speaker.
+- Timeline and card presentation modes.
+- Session detail API:
+  - `GET /api/talks?q=...`
+  - `GET /api/talk/<talk_id>`
 
----
+## Technology
 
-## Directory Structure
+- Python 3.8+
+- Flask
+- HTML, CSS and JavaScript
+- Python `unittest`
 
-```
-d:/project/New folder/
-├── app.py                  # Main Flask web server & API routes
-├── data.py                 # Conference schedule, talk data, speakers, and filter helpers
-├── requirements.txt        # Python dependencies (Flask >= 2.0.0)
-├── static/
-│   ├── css/
-│   │   └── style.css       # Google Cloud theme design tokens, glassmorphism, responsive rules
-│   └── js/
-│       └── main.js         # Client-side instant search, tab filters, modal popups, view toggle
-├── templates/
-│   └── index.html          # Main HTML5 page with Jinja2 template engine
-├── tests/
-│   └── test_app.py         # Pytest / Unittest suite for routes, schemas, and search logic
-└── README.md               # Setup, running, testing & modification guide
-```
-
----
-
-## Setup & Quick Start Guide
-
-### Prerequisites
-- **Python 3.8+** installed on your system.
-
-### 1. Installation
-Clone or navigate to the project directory and install the required dependencies:
+## Run locally
 
 ```bash
-cd "d:\project\New folder"
+python -m venv .venv
+# Windows:
+.venv\\Scripts\\activate
+# macOS / Linux:
+source .venv/bin/activate
+
 pip install -r requirements.txt
-```
-
-### 2. Running the Web Application
-Start the Flask development server:
-
-```bash
 python app.py
 ```
 
-The application will launch locally at:
-👉 **`http://127.0.0.1:5000`**
+Open [http://127.0.0.1:5000](http://127.0.0.1:5000).
 
----
-
-## Running Automated Tests
-
-To run the complete test suite verifying all 12 test specifications (talk counts, speaker rules, schema attributes, lunch break length, and search filters):
+## Run tests
 
 ```bash
-python -m unittest tests/test_app.py
+python -m unittest discover -s tests -v
 ```
 
-Expected output:
+## Project layout
+
 ```text
-Ran 12 tests in 0.060s
-OK
+app.py                  Flask routes and JSON API
+data.py                 Demo conference, sessions and speaker data
+templates/index.html    Main page template
+static/css/style.css    Responsive page styling
+static/js/main.js       Search, filters, modals and view controls
+tests/test_app.py       Application and data tests
 ```
 
----
+## Notes
 
-## How to Make Further Changes
-
-### 1. Adding or Modifying Talks
-Open `data.py` and modify or append objects to the `TALKS` list:
-
-```python
-{
-    "id": 9,
-    "title": "Your New Session Title",
-    "category_id": 1, # 1 for AI & ML, 2 for Cloud Infra
-    "category_name": "AI & Machine Learning",
-    "time_slot": "04:35 PM - 05:20 PM",
-    "description": "Session abstract description...",
-    "speakers": [SPEAKERS["s1"]]
-}
-```
-
-### 2. Adding Speakers
-In `data.py`, add new entries to the `SPEAKERS` dictionary:
-
-```python
-"s11": {
-    "id": "s11",
-    "first_name": "Jane",
-    "last_name": "Doe",
-    "role": "Senior Cloud Architect",
-    "company": "Google Cloud",
-    "linkedin": "https://www.linkedin.com/in/janedoe",
-    "avatar_bg": "linear-gradient(135deg, #4285F4, #91B4FB)",
-    "bio": "Bio description here..."
-}
-```
-
-### 3. Modifying Styling & Aesthetics
-Theme colors and design tokens can be customized in `static/css/style.css` under the `:root` pseudo-class:
-
-```css
-:root {
-    --g-blue: #4285F4;
-    --g-red: #EA4335;
-    --g-yellow: #FBBC04;
-    --g-green: #34A853;
-    --bg-dark: #090D16;
-}
-```
-
-### 4. REST API Integration
-The server provides two JSON API endpoints out of the box:
-- `GET /api/talks?q={query}&category={cat_id}&speaker={name}` - Filtered sessions list.
-- `GET /api/talk/<int:talk_id>` - Specific session payload with speaker details.
-=======
-# Antigravity-workshop
->>>>>>> 6fe3c2f6ad3f96c5ebb40ce1517c5eb312441e60
+The session and speaker data is demonstration content. Confirm event dates, venue, speaker identities and links before publishing this as a real event website. The Flask development server is for local testing; use a production WSGI server when deploying.
